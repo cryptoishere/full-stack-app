@@ -33,7 +33,7 @@ class UserController
                 return View::render('errors/404.html', ['error' => "User not found\n"], [], 404);
             }
 
-            return View::render('pages/user/user.html', ['id' => $user->id], [], 200);
+            return View::render('pages/user/user.html', ['id' => $user->id, 'name' => $user->username], [], 200);
         });
     }
 }

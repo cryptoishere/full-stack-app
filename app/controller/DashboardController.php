@@ -19,7 +19,7 @@ class DashboardController
         $id = 6;
 
         return $db->query(
-            'SELECT id FROM parent WHERE id = ?', [$id]
+            'SELECT id FROM users WHERE id = ?', [$id]
         )->then(function (\React\MySQL\QueryResult $result) {
             if (count($result->resultRows) === 0) {
                 return View::render('errors/404.html', ['error' => "Not found\n"], [], 404);

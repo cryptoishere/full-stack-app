@@ -21,13 +21,13 @@ class UserRepository
     public function findUser(int $id): PromiseInterface
     {
         return $this->db->query(
-            'SELECT id FROM parent WHERE id = ?', [$id]
+            'SELECT id, username FROM users WHERE id = ?', [$id]
         )->then(function (QueryResult $result) {
             if (count($result->resultRows) === 0) {
                 return null;
             }
 
-            return new User($result->resultRows[0]['id']);
+            return new User($result->resultRows[0]['id'], $result->resultRows[0]['username']);
         });
     }
 }
