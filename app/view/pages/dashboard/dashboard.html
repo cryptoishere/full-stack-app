@@ -1,0 +1,40 @@
+{% extends "template/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <style type="text/css">
+        .important { color: #336699; text-transform: uppercase; }
+    </style>
+{% endblock %}
+{% block content %}
+    <div id="content" class="grid-two-column">
+        <aside>
+            <h1>DASHBOARD</h1>
+         </aside>
+         <div class="section polygons">
+             <div class="polygon">
+                <div>
+                    <h2 class="important">
+                        Dashboard stats
+                    </h2>
+                    <p>Hello {{ id|striptags|title }}!</p>
+                    <p>
+                        {{ "now"|date('d/m/Y H:i', timezone="Europe/Tallinn") }}
+                    </p>
+                </div>
+             </div>
+             <div class="polygon2">
+                <div>
+                    <h2 class="important">
+                        Dashboard stats
+                    </h2>
+                    <p>Hello {{ id|striptags|title }}!</p>
+                    <p>
+                        {{ "now"|date('d/m/Y H:i', timezone="Europe/Tallinn") }}
+                    </p>
+                </div>
+             </div>
+         </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block head %}
+            <link rel="stylesheet" href="/assets/css/app.css"/>
+            <link rel="icon" href="/favicon.ico">
+            <title>{% block title %}{% endblock %} - livecode</title>
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            {{ include('section/sidebar.html') }}
+        </header>
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+        <footer>
+            {% block footer %}
+                <div>&copy; Copyright 2021 by <a href="http://livecode.info/">livecode</a>.</div>
+            {% endblock %}
+        </footer>
+        <script src="/assets/scripts/app.js"></script>
+    </body>
+</html>

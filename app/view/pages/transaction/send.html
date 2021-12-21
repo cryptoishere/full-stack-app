@@ -1,0 +1,29 @@
+{% extends "template/base.html" %}
+
+{% block title %}Send STH{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <style type="text/css">
+        .important { color: #336699; text-transform: uppercase; }
+    </style>
+{% endblock %}
+{% block content %}
+    <div id="content" class="grid-center">
+        <div class="card">
+            <h1>SEND TRANSACTION</h1>
+            <h2 class="important">
+                Smartholdem coin gateway
+            </h2>
+            <p>Hello {{ name|striptags|title }}!</p>
+            <p>Role: {{ role|striptags }}!</p>
+            <p>
+                {% apply upper %}
+                    Payment Gateway
+                {% endapply %}
+            </p>
+            <p>
+                {{ "now"|date('d/m/Y H:i', timezone="Europe/Tallinn") }}
+            </p>
+        </div>
+    </div>
+{% endblock %}

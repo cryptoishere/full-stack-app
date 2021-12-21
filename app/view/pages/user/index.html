@@ -1,0 +1,25 @@
+{% extends "template/base.html" %}
+
+{% block title %}Account{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <style type="text/css">
+        .important { color: #336699; text-transform: uppercase; }
+    </style>
+{% endblock %}
+{% block content %}
+    <div id="content" class="grid-two-column">
+        <aside>
+            <h1>ACCOUNT</h1>
+         </aside>
+         <div class="section">
+            <h2 class="important">
+                Account data
+            </h2>
+            <p>Hello {{ name|striptags|title }}!</p>
+            <p>
+                {{ "now"|date('d/m/Y H:i', timezone="Europe/Tallinn") }}
+            </p>
+         </div>
+    </div>
+{% endblock %}
