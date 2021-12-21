@@ -9,6 +9,7 @@ $dotenv->load();
 
 use routes\Router;
 use core\Env;
+use core\Session;
 
 $container = new FrameworkX\Container([
     React\MySQL\ConnectionInterface::class => function () {
@@ -19,6 +20,8 @@ $container = new FrameworkX\Container([
 ]);
 
 $app = new FrameworkX\App($container);
+
+Session::init(1);
 
 (new Router($app))->register();
 
