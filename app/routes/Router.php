@@ -173,7 +173,7 @@ class Router
         });
 
         // PRODUCTION
-        $this->app->get('/',  DashboardController::class);
+        $this->app->get('/', DashboardController::class);
 
         $this->app->redirect('/promo/reactphp', 'http://reactphp.org/');
         $this->app->redirect('/blog.html', '/blog', 301);
