@@ -20,6 +20,18 @@ class View
             'cache' => $templateCache,
             'debug' => true,
         ]);
+
+        $includeAssests = new \Twig\TwigFunction('webpack_inc', function (string $name) {
+            if ($test = file_get_contents('/home/crypto/Desktop/www/html/public/manifest.json')) {
+                $decoded_json = json_decode($test);
+
+                return (string) $decoded_json->{$name};
+            }
+
+            return $name;
+        });
+
+        $twig->addFunction($includeAssests);
         
         return new Response(
             $statusCode,

@@ -9,6 +9,8 @@ use middleware\AdminMiddleware;
 use middleware\ContentTypeTextMiddleware;
 use middleware\ContentTypeHTMLMiddleware;
 use controller\DashboardController;
+use controller\LoginController;
+use controller\RegisterController;
 use controller\UserController;
 use controller\SendController;
 use controller\NodeController;
@@ -174,6 +176,11 @@ class Router
 
         // PRODUCTION
         $this->app->get('/', DashboardController::class);
+
+        $this->app->get('/login', LoginController::class);
+        // $this->app->get('/register', RegisterController::class);
+        // $this->app->post('/register', RegisterController::class);
+        $this->app->map(['GET', 'POST'], '/register', RegisterController::class);
 
         $this->app->redirect('/promo/reactphp', 'http://reactphp.org/');
         $this->app->redirect('/blog.html', '/blog', 301);
