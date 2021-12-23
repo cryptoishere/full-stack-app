@@ -18,8 +18,8 @@ const isProd = !isDev;
 const options = {
   basePath: '',
   publicPath: '',
-  removeKeyHash: /([a-f0-9]{32}\.?)/gi,
-  useEntryKeys: false, // DEFAULT FALSE
+  // removeKeyHash: /([a-f0-9]{32}\.?)/gi,
+  // useEntryKeys: false, // DEFAULT FALSE
 
 };
 
@@ -125,6 +125,7 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/i,
         use: [
           (process.env.NODE_ENV === 'development') ? 'style-loader' : MiniCssExtractPlugin.loader,
+          // MiniCssExtractPlugin.loader,
           "css-loader",
           {
             loader: "postcss-loader",
