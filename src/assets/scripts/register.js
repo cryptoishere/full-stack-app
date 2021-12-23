@@ -23,7 +23,7 @@ generate.addEventListener('click', function () {
     let oReq = new XMLHttpRequest();
     oReq.addEventListener("load", reqListener);
     oReq.open("GET", "http://localhost:3000/api/mainnet/1");
-    oReq.setRequestHeader('Content-Type', 'text/plain')
+    oReq.setRequestHeader('Content-Type', 'text/plain');
     oReq.send();
 });
 

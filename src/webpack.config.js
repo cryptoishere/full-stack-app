@@ -93,10 +93,8 @@ const plugins = () => {
 };
 
 module.exports = {
-  // context: path.resolve(__dirname, 'src'),
   context: path.resolve(__dirname),
   mode: isProd ? 'production' : 'development',
-  // entry: './assets/scripts/app.js',
   entry: {
     main: { import: ['./assets/scripts/app.js']},
     register: { import: './assets/scripts/register.js' },
@@ -113,7 +111,6 @@ module.exports = {
     extensions: ['.js', '.json', '.png'],
     alias: {
       '@models': path.resolve(__dirname, 'models'),
-      // '@': path.resolve(__dirname, 'src'),
       '@': path.resolve(__dirname),
     },
   },
@@ -127,8 +124,7 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/i,
         use: [
-          // (process.env.NODE_ENV === 'development') ? 'style-loader' : MiniCssExtractPlugin.loader,
-          MiniCssExtractPlugin.loader,
+          (process.env.NODE_ENV === 'development') ? 'style-loader' : MiniCssExtractPlugin.loader,
           "css-loader",
           {
             loader: "postcss-loader",

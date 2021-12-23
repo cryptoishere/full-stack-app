@@ -21,14 +21,14 @@ class View
             'debug' => true,
         ]);
 
-        $includeAssests = new \Twig\TwigFunction('webpack_inc', function (string $name) {
-            if ($test = file_get_contents('/home/crypto/Desktop/www/html/public/manifest.json')) {
-                $decoded_json = json_decode($test);
+        $includeAssests = new \Twig\TwigFunction('webpack_inc', function (string $filename) {
+            if ($manifestJson = file_get_contents('/home/crypto/Desktop/www/html/public/manifest.json')) {
+                $decodedJson = json_decode($manifestJson);
 
-                return (string) $decoded_json->{$name};
+                return (string) $decodedJson->{$filename};
             }
 
-            return $name;
+            return $filename;
         });
 
         $twig->addFunction($includeAssests);
