@@ -8,10 +8,14 @@ class User
     public $id;
     /** @readonly **/
     public $username;
+    /** @readonly **/
+    public $pin;
 
-    public function __construct(string $id, string $username)
+    public function __construct(string $id, string $username, int $pin)
     {
         $this->id = $id;
         $this->username = $username;
+        $this->pin = $pin;
+
     }
 }
