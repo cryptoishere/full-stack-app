@@ -4,6 +4,9 @@ namespace controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 
+use repository\UserRepository;
+use entities\User;
+
 use core\View;
 
 // TODO: import
@@ -11,21 +14,29 @@ use core\View;
 
 class DashboardController
 {
+    private $repository;
+
+    public function __construct(UserRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function __invoke(ServerRequestInterface $request)
     {
-        $credentials = 'root:root@127.0.0.1:53066/dev_test?idle=0.001&timeout=0.5';
-        $db = (new \React\MySQL\Factory())->createLazyConnection($credentials);
-
         $id = 6;
+        // $id = $request->getAttribute('id');
+        
 
-        return $db->query(
-            'SELECT id FROM users WHERE id = ?', [$id]
-        )->then(function (\React\MySQL\QueryResult $result) {
-            if (count($result->resultRows) === 0) {
-                return View::render('errors/404.html', ['error' => "Not found\n"], [], 404);
+        if (!$id) {
+            return View::render('pages/user/index.html', ['name' => 'Developer'], [], 200);
+        }
+
+        return $this->repository->findUser($id)->then(function (?User $user) {
+            if ($user === null) {
+                return View::render('errors/404.html', ['error' => "User not found\n"], [], 404);
             }
 
-            return View::render('pages/dashboard/dashboard.html', $result->resultRows[0]);
+            return View::render('pages/dashboard/dashboard.html', ['username' => $user->username, 'pin' => $user->pin], [], 200);
         });
     }
 }
