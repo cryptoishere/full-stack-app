@@ -21,8 +21,6 @@ $container = new FrameworkX\Container([
 
 $app = new FrameworkX\App($container);
 
-Session::init(3600);
-
 (new Router($app))->register();
 
 $app->run();
