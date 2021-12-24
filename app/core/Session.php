@@ -2,6 +2,8 @@
 
 namespace core;
 
+use \React\MySQL\QueryResult;
+
 class Session
 {
     /**
@@ -52,6 +54,7 @@ class Session
     public static function init($lifeTime = 0)
     {
         if (self::$sessionStarted == false) {
+            session_name('STHSESSION');
             session_set_cookie_params($lifeTime);
             session_start();
 
@@ -171,6 +174,45 @@ class Session
             }
 
             return true;
+        }
+
+        return false;
+    }
+
+    public static function userIsLoggedIn()
+    {
+        return self::get('user_authenticated') ? true : false;
+    }
+
+    public static function isSessionStarted()
+    {
+        return session_status() === PHP_SESSION_ACTIVE;
+    }
+
+    public static function isConcurrentSessionExists(): bool
+    {
+        $session_id = session_id();
+        // $userId = Session::get('user_id');
+        $userId = 6;
+
+        if (isset($userId) && isset($session_id)) {
+            $db = DBFactory::getConnection();
+
+            $sql = 'SELECT session_id FROM users WHERE id = ?';
+
+            $response = true;
+
+            $db->query($sql, [$userId])->then(function (QueryResult $result) use ($session_id) {
+                if (count($result->resultRows) === 0) {
+                    return false;
+                }
+
+                return $session_id !== (string)$result->resultRows[0]['session_id'];
+            })->then(function (bool $result) use (&$res) {
+                $res = $result;
+            });
+
+            return $response;
         }
 
         return false;
