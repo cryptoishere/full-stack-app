@@ -17,7 +17,8 @@ class View
         }
 
         $twig = new \Twig\Environment($loader, [
-            'cache' => $templateCache,
+            // TODO: Disable cache on development for hot reload. Need fix.
+            // 'cache' => $templateCache,
             'debug' => true,
         ]);
 
