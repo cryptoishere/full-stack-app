@@ -8,6 +8,7 @@ use React\Stream\ThroughStream;
 use middleware\AdminMiddleware;
 use middleware\ContentTypeTextMiddleware;
 use middleware\ContentTypeHTMLMiddleware;
+use middleware\AuthMiddleware;
 use controller\DashboardController;
 use controller\LoginController;
 use controller\RegisterController;
@@ -18,6 +19,8 @@ use controller\NodeController;
 use React\EventLoop\Loop;
 
 use core\View;
+
+use Illuminate\Support\Collection;
 
 class Router
 {
@@ -175,22 +178,20 @@ class Router
         });
 
         // PRODUCTION
-        $this->app->get('/', DashboardController::class);
+        $this->app->get('/', AuthMiddleware::class, DashboardController::class);
 
         $this->app->get('/login', LoginController::class);
-        // $this->app->get('/register', RegisterController::class);
-        // $this->app->post('/register', RegisterController::class);
         $this->app->map(['GET', 'POST'], '/register', RegisterController::class);
 
         $this->app->redirect('/promo/reactphp', 'http://reactphp.org/');
         $this->app->redirect('/blog.html', '/blog', 301);
 
-        $this->app->get('/user', UserController::class);
-        $this->app->get('/user/{id:[0-9]+}', UserController::class);
+        $this->app->get('/user', AuthMiddleware::class, UserController::class);
+        $this->app->get('/user/{id:[0-9]+}', AuthMiddleware::class, UserController::class);
 
-        $this->app->get('/send', AdminMiddleware::class, ContentTypeHTMLMiddleware::class, SendController::class);
+        $this->app->get('/send', AuthMiddleware::class, AdminMiddleware::class, ContentTypeHTMLMiddleware::class, SendController::class);
 
-        $this->app->post('/transaction', function (ServerRequestInterface $request) {
+        $this->app->post('/transaction', AuthMiddleware::class, function (ServerRequestInterface $request) {
             $url1 = 'http://185.185.127.77:6100/api/transactions';
 
             $trans = json_encode([
@@ -218,7 +219,7 @@ class Router
             );
         });
 
-        $this->app->get('/getBalance', function (ServerRequestInterface $request) {
+        $this->app->get('/getBalance', AuthMiddleware::class, function (ServerRequestInterface $request) {
             $url = 'http://livedev.info:6100/api/accounts/getBalance?address=SefFut3o9aTRXbXCemcAahxBVTrKpzt1VB';
             $fp = fopen($url, 'r');
             $balance = stream_get_contents($fp);
@@ -230,7 +231,7 @@ class Router
             );
         });
 
-        $this->app->get('/node', NodeController::class);
+        $this->app->get('/node', AuthMiddleware::class, NodeController::class);
 
         $this->app->get('/debug', function (ServerRequestInterface $request) {
             ob_start();
