@@ -36,5 +36,5 @@
 
 {% block html_body_js_bottom %}
     {{ parent() }}
-    <script src="{{ webpack_inc('register.js') }}"></script>
+    <script src="{{ URL }}{{ webpack_inc('register.js') }}"></script>
 {% endblock %}
