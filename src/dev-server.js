@@ -28,7 +28,7 @@ module.exports = {
         '*': {
             // Specifying the full path to the public folder
             // Replace "webpack-devserver-php" with your project folder name
-            target: `http://localhost/webpack/dist`,
+            target: `http://localhost/`,
         },
     },
 

@@ -31,5 +31,3 @@ $(function () {
 console.log('include css');
 require('../css/app.css');
 console.log('app.js');
-
-

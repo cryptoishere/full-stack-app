@@ -22,7 +22,7 @@ generate.addEventListener('click', function () {
       
     let oReq = new XMLHttpRequest();
     oReq.addEventListener("load", reqListener);
-    oReq.open("GET", "http://localhost:3000/api/mainnet/1");
+    oReq.open("GET", "https://localhost:3000/api/mainnet/1");
     oReq.setRequestHeader('Content-Type', 'text/plain');
     oReq.send();
 });
@@ -30,7 +30,7 @@ generate.addEventListener('click', function () {
 submit.addEventListener('click', function (e) {
     let xhr = new XMLHttpRequest();
 
-    xhr.open("POST", 'http://localhost/register', true);
+    xhr.open("POST", window.location.origin + '/register', true);
 
     //Send the proper header information along with the request
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -41,7 +41,7 @@ submit.addEventListener('click', function (e) {
             let res = JSON.parse(this.response || {});
 
             if (res['result'] === 'success') {
-                location.href = 'http://localhost/login';
+                location.href = window.location.origin + '/login';
             }
         }
     }

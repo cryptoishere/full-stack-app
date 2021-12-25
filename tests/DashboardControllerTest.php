@@ -10,7 +10,7 @@ class DashboardControllerTest extends TestCase
 {
     public function testControllerReturnsValidResponse()
     {
-        $request = new ServerRequest('GET', 'http://localhost:8080/');
+        $request = new ServerRequest('GET', 'https://localhost/');
 
         $controller = new \controller\DashboardController();
         $response = $controller($request);

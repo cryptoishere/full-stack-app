@@ -18,6 +18,26 @@ class UserRepository
     }
 
     /** @return PromiseInterface<?User> **/
+    public function query(string $sql, array $params = []): PromiseInterface
+    {
+        return $this->db->query($sql, $params)->then(function (QueryResult $result) {
+            if (!$result ) {
+                return null;
+            }
+
+            if (count($result->resultRows ?? []) === 0) {
+                return null;
+            }
+
+            return new User(
+                $result->resultRows[0]['id'],
+                $result->resultRows[0]['username'],
+                $result->resultRows[0]['pin']
+            );
+        });
+    }
+
+    /** @return PromiseInterface<?User> **/
     public function findUser(int $id): PromiseInterface
     {
         return $this->db->query(
