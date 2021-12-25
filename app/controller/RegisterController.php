@@ -2,19 +2,31 @@
 
 namespace controller;
 
+use BadMethodCallException;
 use Psr\Http\Message\ServerRequestInterface;
 
 use Cryptoishere\Bip39\Bip39;
 use Cryptoishere\Bip39\Util\Entropy;
+
+use repository\UserRepository;
 
 use core\View;
 
 use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
 
+use entities\User;
+
 
 class RegisterController
 {
+    private $repository;
+
+    public function __construct(UserRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function __invoke(ServerRequestInterface $request)
     {
         // the parameter here is the size, in bits, of the random data to be generated.
@@ -27,27 +39,24 @@ class RegisterController
             $pubkey = $data['pubkey'] ?? '';
             $address = $data['address'] ?? '';
 
-            // Save to database;
+            try {
+                $this->repository->query("INSERT INTO users (pubkey, username) VALUES (?, ?)", [$pubkey, $address]);
+            } catch (\Exception $error) {
+                //throw $error;
+            }
 
-            return View::json(
-                json_encode(['result' => 'success']),
+            return View::json(json_encode(['result' => 'success']),
                 ['Content-Type' => 'application/json'],
             );
         }
 
-        $promise = $this->getAwesomeResultPromise();
-
-        $result = $promise->then(
-            function ($reg) {
-                $array = json_decode($reg);
-                // var_dump($array[0]);
-                // exit;
-                // Deferred resolved, do something with $value
+        return $this->getLoginCredentials()->then(
+            function ($newAccountJson) {
+                $newAccountJson = json_decode($newAccountJson);
                 return View::render('pages/register.html', [
-                    'address' => $array[0]->address,
-                    'pass' => $array[0]->pass,
-                    'pubkey' => $array[0]->pubkey,
-        
+                    'address' => $newAccountJson[0]->address,
+                    'pass' => $newAccountJson[0]->pass,
+                    'pubkey' => $newAccountJson[0]->pubkey,
                 ]);
             },
             function ($reason) {
@@ -55,17 +64,10 @@ class RegisterController
                 echo 'failed';
                 exit;
             },
-            function ($update) {
-                // Progress notification triggered, do something with $update
-                echo 'update';
-                exit;
-            }
         );
-
-        return $result;
     }
 
-    public function getAwesomeResultPromise(): PromiseInterface
+    public function getLoginCredentials(): PromiseInterface
     {
         $deferred = new Deferred();
 
@@ -81,15 +83,15 @@ class RegisterController
         $context = stream_context_create($opts);
         $fp = fopen($url, 'r', false, $context);
 
-        if (!$newAccountJson = stream_get_contents($fp)) {
+        if (!$fp) {
             $deferred->reject('Server down');
-        } else {
-            $deferred->resolve($newAccountJson);
+            throw new BadMethodCallException('Server down');
         }
+
+        $deferred->resolve(stream_get_contents($fp));
 
         fclose($fp);
 
-        // Return the promise
         return $deferred->promise();
     }
 }

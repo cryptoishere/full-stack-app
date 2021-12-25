@@ -4,18 +4,16 @@ namespace entities;
 
 class User
 {
-    /** @readonly **/
-    public $id;
-    /** @readonly **/
-    public $username;
-    /** @readonly **/
-    public $pin;
-
-    public function __construct(string $id, string $username, int $pin)
+    public function __construct(
+        public readonly string  $id,
+        // public readonly string $session_id,
+        public readonly string $username,
+        public readonly int $pin,
+        // public readonly int $account_type,
+        // public readonly string $create_time,
+        // public readonly string $update_time,
+    )
     {
-        $this->id = $id;
-        $this->username = $username;
-        $this->pin = $pin;
-
+        
     }
 }

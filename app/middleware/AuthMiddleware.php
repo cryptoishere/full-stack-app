@@ -13,11 +13,11 @@ class AuthMiddleware
 {
     public function __invoke(ServerRequestInterface $request, callable $next)
     {
-        // if (!self::initAndCheckAuthentication()) {
-        //     return View::redirect(301, [
-        //         'Location' => Env::get('URL') . 'login?redirect=' . urlencode($_SERVER['REQUEST_URI']),
-        //     ]);
-        // }
+        if (!self::initAndCheckAuthentication()) {
+            return View::redirect(301, [
+                'Location' => Env::get('URL') . 'login?redirect=' . urlencode($_SERVER['REQUEST_URI']),
+            ]);
+        }
 
         $response = $next($request);
 
