@@ -48,6 +48,7 @@
     "webpack-dev-server": "^4.6.0",
     "webpack-manifest-plugin": "^4.0.2",
     "webpack-nano": "^1.1.1",
+    "webpack-node-externals": "^3.0.0",
     "webpack-subresource-integrity": "^5.0.0",
     "xml-loader": "^1.2.1"
   },

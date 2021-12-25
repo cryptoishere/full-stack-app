@@ -1,4 +1,5 @@
 // import * as $ from 'jquery'
+import 'jquery';
 // import Post from '@models/Post'
 // import json from './assets/json.json'
 // import xml from './assets/data.xml'
@@ -23,7 +24,12 @@
 // else
 //     console.log('Address INVALID');
 
+$(function () {
+    console.log('jQuery loaded');
+});
+
 console.log('include css');
 require('../css/app.css');
 console.log('app.js');
-console.log('delfi');
+
+

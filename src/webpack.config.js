@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -8,6 +9,7 @@ const TerserWebpackPlugin = require('terser-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const { SubresourceIntegrityPlugin } = require('webpack-subresource-integrity');
 const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
 const devServer = require('./dev-server.js');
 
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
@@ -44,6 +46,10 @@ const filename = ext => isDev ? `${ext}/[name].${ext}` : `${ext}/[name].[content
 
 const plugins = () => {
   const base = [
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+    }),
     new WebpackManifestPlugin(options),
     new CleanWebpackPlugin({
       verbose: true,
@@ -94,6 +100,14 @@ const plugins = () => {
 
 module.exports = {
   context: path.resolve(__dirname),
+  // target: 'node', 
+  // externalsPresets: { node: true }, // in order to ignore built-in modules like path, fs, etc.
+  // externals: [nodeExternals({
+  //   // this WILL include `jquery` and `webpack/hot/dev-server` in the bundle, as well as `lodash/*`
+  //   // allowlist: ['jquery', 'webpack/hot/dev-server', /^lodash/]
+  //   allowlist: ['jquery']
+  //   // importType: 'commonjs',
+  // })], // in order to ignore all modules in node_modules folder
   mode: isProd ? 'production' : 'development',
   entry: {
     main: { import: ['./assets/scripts/app.js']},
@@ -124,8 +138,8 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/i,
         use: [
-          (process.env.NODE_ENV === 'development') ? 'style-loader' : MiniCssExtractPlugin.loader,
-          // MiniCssExtractPlugin.loader,
+          // (process.env.NODE_ENV === 'development') ? 'style-loader' : MiniCssExtractPlugin.loader,
+          MiniCssExtractPlugin.loader,
           "css-loader",
           {
             loader: "postcss-loader",
