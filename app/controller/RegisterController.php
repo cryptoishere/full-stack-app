@@ -71,7 +71,7 @@ class RegisterController
     {
         $deferred = new Deferred();
 
-        $url = 'http://localhost:3000/api/mainnet/1';
+        $url = 'https://localhost:3000/api/mainnet/1';
 
         $opts = [
             'http' => [
