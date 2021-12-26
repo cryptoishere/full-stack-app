@@ -2,20 +2,21 @@
 
 namespace controller;
 
-use BadMethodCallException;
-use Psr\Http\Message\ServerRequestInterface;
-
-use Cryptoishere\Bip39\Bip39;
-use Cryptoishere\Bip39\Util\Entropy;
-
-use repository\UserRepository;
-
+use core\Env;
 use core\View;
 
+use entities\User;
+use BadMethodCallException;
+
 use React\Promise\Deferred;
+
+use Cryptoishere\Bip39\Bip39;
+
+use repository\UserRepository;
 use React\Promise\PromiseInterface;
 
-use entities\User;
+use Cryptoishere\Bip39\Util\Entropy;
+use Psr\Http\Message\ServerRequestInterface;
 
 
 class RegisterController
@@ -45,9 +46,7 @@ class RegisterController
                 //throw $error;
             }
 
-            return View::json(json_encode(['result' => 'success']),
-                ['Content-Type' => 'application/json'],
-            );
+            return View::json(json_encode(['result' => 'success']));
         }
 
         return $this->getLoginCredentials()->then(
@@ -71,7 +70,7 @@ class RegisterController
     {
         $deferred = new Deferred();
 
-        $url = 'https://localhost:3000/api/mainnet/1';
+        $url = Env::get('GENERATE_CREDENTIALS');
 
         $opts = [
             'http' => [

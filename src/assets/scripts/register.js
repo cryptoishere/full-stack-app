@@ -8,20 +8,22 @@ generate.addEventListener('click', function () {
     function reqListener () {
         data = JSON.parse(this.response);
 
-        address.value = data[0].address;
-        passphrase.value = data[0].pass;
-        pubkey.value = data[0].pubkey;
+        address.defaultValue = data[0].address;
+        passphrase.defaultValue = data[0].pass;
+        pubkey.defaultValue = data[0].pubkey;
     }
       
-    let oReq = new XMLHttpRequest();
-    oReq.addEventListener("load", reqListener);
-    oReq.open("GET", URL + ":3000/api/mainnet/1");
-    oReq.setRequestHeader('Content-Type', 'text/plain');
-    oReq.send();
+    let xhr = new XMLHttpRequest();
+    xhr.addEventListener("load", reqListener);
+    xhr.open("GET", URL + ":3000/api/mainnet/1");
+    xhr.setRequestHeader('Content-Type', 'text/plain');
+    xhr.send();
 });
 
 submit.addEventListener('click', function (e) {
     let xhr = new XMLHttpRequest();
+    let pubkey = document.getElementById('pubkey');
+    let address = document.getElementById('username');
 
     xhr.open("POST", window.location.origin + '/register', true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -34,5 +36,5 @@ submit.addEventListener('click', function (e) {
             }
         }
     }
-    xhr.send(`pubkey=${document.getElementById('pubkey').value}&address=${document.getElementById('address').value}`);
+    xhr.send(`pubkey=${pubkey.defaultValue}&address=${address.defaultValue}`);
 }, false);

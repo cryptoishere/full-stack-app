@@ -2,12 +2,12 @@
 
 namespace entities;
 
-class User
+class UserLogin
 {
     public function __construct(
         public readonly string  $id,
         // public readonly string $session_id,
-        // public readonly string $pubkey,
+        public readonly string $pubkey,
         public readonly string $username,
         public readonly int $pin,
         // public readonly int $account_type,
