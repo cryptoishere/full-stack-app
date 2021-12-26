@@ -4,6 +4,10 @@
         {% block head %}
             <link rel="stylesheet" href="{{ URL }}{{ webpack_inc('main.css') }}">
             <link rel="icon" href="/favicon.ico">
+            <script>
+                // var URL = '{{ URL }}';
+                var URL = 'https://localhost';
+            </script>
             <title>{% block title %}{% endblock %} - livecode</title>
         {% endblock %}
     </head>

@@ -180,7 +180,7 @@ class Router
         // PRODUCTION
         $this->app->get('/', AuthMiddleware::class, DashboardController::class);
 
-        $this->app->get('/login', LoginController::class);
+        $this->app->map(['GET', 'POST'], '/login', LoginController::class);
         $this->app->map(['GET', 'POST'], '/register', RegisterController::class);
 
         $this->app->redirect('/promo/reactphp', 'http://reactphp.org/');
@@ -192,7 +192,7 @@ class Router
         $this->app->get('/send', AuthMiddleware::class, AdminMiddleware::class, ContentTypeHTMLMiddleware::class, SendController::class);
 
         $this->app->post('/transaction', AuthMiddleware::class, function (ServerRequestInterface $request) {
-            $url1 = 'http://185.185.127.77:6100/api/transactions';
+            $url1 = 'http://{url}/api/transactions';
 
             $trans = json_encode([
                 "recipientId" => "ShWXjqeNbm7Cd7onwC6eXT6e3jnejzZdDb",
@@ -213,22 +213,16 @@ class Router
             $transaction = stream_get_contents($fp);
             fclose($fp);
 
-            return View::json(
-                $transaction,
-                ['Content-Type' => 'application/json'],
-            );
+            return View::json($transaction);
         });
 
         $this->app->get('/getBalance', AuthMiddleware::class, function (ServerRequestInterface $request) {
-            $url = 'http://livedev.info:6100/api/accounts/getBalance?address=SefFut3o9aTRXbXCemcAahxBVTrKpzt1VB';
+            $url = 'http://{url}/api/accounts/getBalance?address=SefFut3o9aTRXbXCemcAahxBVTrKpzt1VB';
             $fp = fopen($url, 'r');
             $balance = stream_get_contents($fp);
             fclose($fp);
 
-            return View::json(
-                $balance,
-                ['Content-Type' => 'application/json'],
-            );
+            return View::json($balance);
         });
 
         $this->app->get('/node', AuthMiddleware::class, NodeController::class);

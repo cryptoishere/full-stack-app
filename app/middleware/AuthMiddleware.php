@@ -13,7 +13,7 @@ class AuthMiddleware
 {
     public function __invoke(ServerRequestInterface $request, callable $next)
     {
-        if (!self::initAndCheckAuthentication()) {
+        if (!self::checkAuthentication()) {
             return View::redirect(301, [
                 'Location' => Env::get('URL') . 'login?redirect=' . urlencode($_SERVER['REQUEST_URI']),
             ]);
@@ -24,14 +24,12 @@ class AuthMiddleware
         return $response;
     }
 
-    public static function initAndCheckAuthentication(): bool
+    // public static function initAndCheckAuthentication(): bool
+    public static function checkAuthentication(): bool
     {
-        Session::init(1);
+        Session::init(Session::SESSION_LIFETIME);
 
-        self::checkSessionConcurrency();
-
-        if (!Session::userIsLoggedIn()) {
-
+        if (!Session::userIsLoggedIn() || !self::checkSessionConcurrency()) {
             Session::destroy();
 
             return false;
@@ -40,14 +38,12 @@ class AuthMiddleware
         return true;
     }
 
-    public static function checkSessionConcurrency()
+    public static function checkSessionConcurrency(): bool
     {
-        if (Session::userIsLoggedIn()) {
-            if (Session::isConcurrentSessionExists()) {
-
-                // var_dump('session_id and db save id not matching, some one esle can be used other session');
-                // exit;
-            }
+        if (Session::userIsLoggedIn() && Session::isConcurrentSessionExists()) {
+            return false;
         }
+
+        return true;
     }
 }

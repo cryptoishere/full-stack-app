@@ -105,13 +105,22 @@ module.exports = {
   // externals: [nodeExternals({
   //   // this WILL include `jquery` and `webpack/hot/dev-server` in the bundle, as well as `lodash/*`
   //   // allowlist: ['jquery', 'webpack/hot/dev-server', /^lodash/]
-  //   allowlist: ['jquery']
   //   // importType: 'commonjs',
   // })], // in order to ignore all modules in node_modules folder
+  // externals: {
+  //   'sthjs': 'commonjs2 sthjs',
+  // },
   mode: isProd ? 'production' : 'development',
   entry: {
-    main: { import: ['./assets/scripts/app.js']},
-    register: { import: './assets/scripts/register.js' },
+    main: {
+      import: ['./assets/scripts/app.js'],
+    },
+    register: {
+      import: './assets/scripts/register.js'
+    },
+    login: {
+      import: './assets/scripts/login.js',
+    },
     // analytics: './scripts/analytics.ts',
   },
   output: {

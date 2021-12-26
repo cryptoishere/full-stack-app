@@ -7,6 +7,7 @@ use React\MySQL\QueryResult;
 use React\Promise\PromiseInterface;
 
 use entities\User;
+use entities\UserLogin;
 
 class UserRepository
 {
@@ -49,6 +50,25 @@ class UserRepository
 
             return new User(
                 $result->resultRows[0]['id'],
+                $result->resultRows[0]['username'],
+                $result->resultRows[0]['pin']
+            );
+        });
+    }
+
+    /** @return PromiseInterface<?UserLogin> **/
+    public function findUserByAddress(string $address): PromiseInterface
+    {
+        return $this->db->query(
+            'SELECT id, pubkey, username, pin FROM users WHERE username = ?', [$address]
+        )->then(function (QueryResult $result) {
+            if (count($result->resultRows) === 0) {
+                return null;
+            }
+
+            return new UserLogin(
+                $result->resultRows[0]['id'],
+                $result->resultRows[0]['pubkey'],
                 $result->resultRows[0]['username'],
                 $result->resultRows[0]['pin']
             );

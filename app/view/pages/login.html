@@ -16,19 +16,22 @@
             <h2>Login</h2>
             <form>
                 <div class="inputBox">
-                    <label for="userName">Username</label>
-                    <input type="text" name="userName" id="userName" placeholder="type your username" autocomplete required/>
-                </div>
-                <div class="inputBox">
-                    <label for="userPassword">Password</label>
-                    <input type="password" name="current-password" id="userPassword" placeholder="type your password"
+                    <label for="passphrase">passphrase</label>
+                    <input type="password" name="current-password" id="passphrase" placeholder="type your passphrase"
                         autocomplete required/>
                 </div>
+                <div class="inputBox">
+                    <label for="username">address</label>
+                    <input type="text" name="username" id="username" readonly/>
+                </div>
                 <div>
-                    <button type="submit" name="" style="float: left;">Submit</button>
-                    <a class="button" href="/register" style="float: left;">Register</a>
+                    <button type="button" id="login" style="float: left;">Enter</button>
                 </div>
             </form>
          </div>
     </div>
+{% endblock %}
+{% block html_body_js_bottom %}
+    {{ parent() }}
+    <script src="{{ URL }}{{ webpack_inc('login.js') }}"></script>
 {% endblock %}

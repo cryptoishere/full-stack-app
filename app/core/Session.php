@@ -2,10 +2,9 @@
 
 namespace core;
 
-use \React\MySQL\QueryResult;
-
 class Session
 {
+    public const SESSION_LIFETIME = 3600;
     /**
      * Prefix for sessions.
      *
@@ -192,28 +191,27 @@ class Session
     public static function isConcurrentSessionExists(): bool
     {
         $session_id = session_id();
-        // $userId = Session::get('user_id');
-        $userId = 6;
+        $sessionAddress = Session::get('user_authenticated');
 
-        if (isset($userId) && isset($session_id)) {
-            $db = DBFactory::getConnection();
+        // if (isset($sessionAddress) && isset($session_id)) {
+        //     $db = DBFactory::getConnection();
 
-            $sql = 'SELECT session_id FROM users WHERE id = ?';
+        //     $sql = 'SELECT session_id FROM users WHERE username = ?';
 
-            $response = true;
+        //     $response = true;
 
-            $db->query($sql, [$userId])->then(function (QueryResult $result) use ($session_id) {
-                if (count($result->resultRows) === 0) {
-                    return false;
-                }
+        //     $db->query($sql, [$sessionAddress])->then(function (QueryResult $result) use ($session_id) {
+        //         if (count($result->resultRows) === 0) {
+        //             return false;
+        //         }
 
-                return $session_id !== (string)$result->resultRows[0]['session_id'];
-            })->then(function (bool $result) use (&$res) {
-                $res = $result;
-            });
+        //         return $session_id !== (string)$result->resultRows[0]['session_id'];
+        //     })->then(function (bool $result) use (&$res) {
+        //         $res = $result;
+        //     });
 
-            return $response;
-        }
+        //     return $response;
+        // }
 
         return false;
     }

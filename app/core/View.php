@@ -46,7 +46,7 @@ class View
         );
     }
 
-    public static function json($json, array $headers = [], int $statusCode = 200): Response
+    public static function json($json, array $headers = ['Content-Type' => 'application/json'], int $statusCode = 200): Response
     {
         return new Response(
             $statusCode,
