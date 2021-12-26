@@ -16,6 +16,8 @@ use React\Http\Browser;
 use Psr\Http\Message\ResponseInterface;
 
 use core\View;
+use core\Auth;
+use core\Session;
 
 class LoginController
 {
@@ -43,6 +45,15 @@ class LoginController
                     }
 
                     if ($json[0]->pubkey === $user->pubkey) {
+                        Session::init(Session::SESSION_LIFETIME);
+                        // Pass Match
+                        // TODO: fix return of UPDDATE query
+                        if (!$sessionSaved = Auth::setSessionId($json[0]->address)) {
+                            return View::json(json_encode(['result' => 'failed']), [], 404);
+                        }
+
+                        Session::set('user_authenticated', (string)$json[0]->address);
+
                         return View::json(json_encode(['result' => 'success']), [], 200);
                     }
                 };
